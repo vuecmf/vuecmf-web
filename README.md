@@ -25,6 +25,9 @@ npx degit vuecmf/vuecmf-web my-project
 ```
 my-project为你创建的项目名称，可自定义
 
+若因网络问题无法创建模板，也可直接打开 https://gitee.com/emei/vuecmf-web 下载
+
+
 ## 运行项目
 ```
 # 如果是开发调试，则在命令行输入下面回车
