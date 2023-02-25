@@ -53,7 +53,7 @@ export default class ContentService extends BaseService{
         default_expand_all: true,               //树形列表默认是否全部展开
 
         show_checkbox: false,                   //是否显示行选择框
-        selectable: ()=> false                  //设置列表每行是否可选择的回调函数
+        selectable: ():boolean => false         //设置列表每行是否可选择的回调函数
     })
 
     //权限项管理相关设置
@@ -340,13 +340,51 @@ export default class ContentService extends BaseService{
      * @param select_row  当前选择行记录
      */
     loadFormOption = (tableService:AnyObject, select_row: AnyObject): void => {
+        //模型表单设置处理
+        if(tableService.import_config.save_api_url != undefined && tableService.import_config.save_api_url == '/vuecmf/model_form/save'){
+            if(['radio','switch','select'].indexOf(select_row.type) != -1){
+                tableService.table_config.form_info.forEach((item:AnyObject) => {
+                    if(item.field_name == 'default_value'){
+                        item.type = 'select'
+                        Object.values(tableService.table_config.relation_info.linkage).forEach((linkageItem:any) => {
+                            if( linkageItem != undefined){
+                                Object.keys(linkageItem).forEach((k) => {
+                                    if(k == item.field_id){
+                                        linkageItem[k].action_table_name = 'field_option'
+                                        linkageItem[k].action_type = 'dropdown'
+                                    }
+                                })
+                            }
+
+                            if(linkageItem != undefined && linkageItem[item.field_id] != undefined){
+                                linkageItem[item.field_id].action_table_name = 'field_option'
+                                linkageItem[item.field_id].action_type = 'dropdown'
+                            }
+                        })
+                    }
+
+                })
+            }else{
+                tableService.table_config.form_info.forEach((item:AnyObject) => {
+                    if(item.field_name == 'default_value'){
+                        item.type = 'text'
+                    }
+                })
+            }
+        }
+
         const linkage:AnyObject = tableService.table_config.relation_info.linkage
         Object.keys(linkage).forEach((field_id) => {
             let form_field_name = ''
             const form_info:AnyObject = tableService.table_config.form_info
             const form_field_info:AnyObject = []  //表单字段信息
             Object.values(form_info).forEach((form_item) => {
-                if(form_item.field_id == field_id) form_field_name = form_item.field_name
+                if(form_item.field_id == field_id){
+                    form_field_name = form_item.field_name
+                    if(form_field_name == "type" && form_item.label == "控件类型"){
+                        form_field_name = "model_field_id"
+                    }
+                }
                 form_field_info[form_item.field_id] = form_item.field_name
             })
 
@@ -355,7 +393,6 @@ export default class ContentService extends BaseService{
             if(sel_val != ''){
                 const data:AnyObject = {}
                 data[form_field_name] = sel_val
-
                 const linkage_list:AnyObject = linkage[field_id]
 
                 Object.values(linkage_list).forEach((item)=>{
@@ -367,6 +404,10 @@ export default class ContentService extends BaseService{
 
                                 if(res.data.data != null){
                                     Object.keys(res.data.data).forEach((key) => {
+                                        if(form_field_name == "model_field_id"){
+                                            //若是表单中的默认值为下拉框选择，则选项值需要转换成字符串
+                                            res.data.data[key].value = res.data.data[key].value.toString()
+                                        }
                                         form_list.push(res.data.data[key].value)
                                         res_list.push(res.data.data[key])
                                     })
@@ -377,6 +418,7 @@ export default class ContentService extends BaseService{
                                 //先找到关联下拉框的字段名, 然后根据当前字段名找到当前选择的值，再在判断在拉取的下拉列表数据中是否存在， 不存在则删除当前选择的值
                                 const relation_field_name = typeof form_field_info[item.relation_field_id] != 'undefined' ? form_field_info[item.relation_field_id] : ''
                                 if(relation_field_name != '' && typeof select_row[relation_field_name] != 'undefined'){
+
                                     if(typeof select_row[relation_field_name] == 'object'){
                                         const tmp_sel:string[] = []
                                         if(select_row[relation_field_name] != null){
