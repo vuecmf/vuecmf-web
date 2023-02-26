@@ -27,6 +27,11 @@ my-project为你创建的项目名称，可自定义
 
 若因网络问题无法创建模板，也可直接打开 https://gitee.com/emei/vuecmf-web 下载
 
+第三步：下载依赖包
+```
+cd my-project
+yarn install
+```
 
 ## 运行项目
 ```
