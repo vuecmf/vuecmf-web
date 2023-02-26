@@ -12,7 +12,7 @@ import LayoutModel from "@/model/LayoutModel"
 import {computed, nextTick, onMounted} from "vue"
 import router from "@/router"
 import store from '@/store'
-import {ElLoading, ElMessage} from "element-plus";
+import {ElMessage} from "element-plus";
 
 /**
  * 布局服务类
@@ -379,24 +379,6 @@ export default class LayoutService extends BaseService{
      */
     setBreadcrumbList = ():void => {
         this.breadcrumb_list.value = router.currentRoute.value.meta.breadcrumb_list
-    }
-
-    /**
-     * 开始加载页面
-     */
-    pageStart = ():void => {
-        this.page_loading.value = ElLoading.service({
-            lock: true,
-            text: 'Loading',
-            background: 'rgba(0, 0, 0, 0.7)',
-        })
-    }
-
-    /**
-     * 页面加载完成
-     */
-    pageDone = ():void => {
-        this.page_loading.value.close()
     }
 
 

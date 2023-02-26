@@ -2,6 +2,7 @@ const AutoImport = require('unplugin-auto-import/webpack')
 const Components = require('unplugin-vue-components/webpack')
 const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
+
 module.exports = {
     publicPath : './',
     outputDir : 'admin',
@@ -24,29 +25,24 @@ module.exports = {
     },
 	chainWebpack(config) {
       if (process.env.NODE_ENV === 'production') {
-		  config.optimization.splitChunks({
+		config.optimization.minimize(true);
+		config.optimization.splitChunks({
+			chunks: 'all',
 			cacheGroups: {
-			  common: {//commons 一般是是个人定义的
-				name: 'chunk-common', // 打包后的文件名
-				chunks: 'initial',
-				minChunks: 1,
-				maxInitialRequests: 5,
-				minSize: 0,
-				priority: 1,
-				reuseExistingChunk: true
-			  },
-			  vendors: {//vendor 是导入的 npm 包
-				name: 'chunk-vendors',
-				test: /[\\/]node_modules[\\/]/,
-				chunks: 'initial',
-				maxSize: 300000,
-				maxInitialRequests: 20,
-				priority: 2,
-				reuseExistingChunk: true,
-				enforce: true
-			  }
+				vendors: { //vendor 是导入的第三方依赖包
+					name: 'chunk-vendors',
+					test: /[\\/]node_modules[\\/]/,
+					chunks: 'initial',
+					maxSize: 300000,
+					priority: 1  //优先级：数字越大优先级越高
+				},
+				elementPlus: {
+					name: 'chunk-elementPlus',
+					test: /[\\/]node_modules[\\/]_?element-plus(.*)/,
+					priority: 2
+				}
 			}
-		  })
+		});
     }
   }
 

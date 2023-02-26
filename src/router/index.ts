@@ -53,7 +53,6 @@ const router = createRouter({
  * 进入路由前
  */
 router.beforeEach( (to,from, next) => {
-  //service.pageStart()
   const token = localStorage.getItem('vuecmf_token')
   if(to.name == 'login'){
     next()
@@ -70,11 +69,6 @@ router.beforeEach( (to,from, next) => {
     }
   }
 
-})
-
-//进入路由后
-router.afterEach((to, from) => {
-  //service.pageDone()
 })
 
 
