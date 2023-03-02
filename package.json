@@ -23,7 +23,7 @@
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vue-vuecmf-dialog": "^1.4.8",
-    "vue3-vuecmf-table": "^1.14.14",
+    "vue3-vuecmf-table": "^1.15.0",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
