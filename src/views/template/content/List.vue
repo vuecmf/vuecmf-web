@@ -48,7 +48,7 @@
             </el-button>
           </template>
           <template v-else>
-            <el-dropdown-item @click.prevent="item.event(row, service)" v-if="item.visible && (typeof item.showCallback == 'undefined' || item.showCallback(row))">{{ item.label }}</el-dropdown-item>
+            <el-menu-item @click="item.event(row, service)" v-if="item.visible && (typeof item.showCallback == 'undefined' || item.showCallback(row))">{{ item.label }}</el-menu-item>
           </template>
 
         </template>

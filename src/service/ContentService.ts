@@ -520,9 +520,9 @@ export default class ContentService extends BaseService{
             const doc_width = document.documentElement.offsetWidth
 
             if (router.currentRoute.value.meta.table_name == 'menu'){
-                this.table_config.operate_width = doc_width < 769 ? 120 : 168
+                this.table_config.operate_width = doc_width < 769 ? 56 : 168
             }else{
-                this.table_config.operate_width = doc_width < 769 ? 110 : 223
+                this.table_config.operate_width = doc_width < 769 ? 56 : 223
             }
 
             //列表行操作是否展开
@@ -530,8 +530,8 @@ export default class ContentService extends BaseService{
                 this.table_config.expand_action = false
                 this.dialog_config.dlg_expand_action = false
 
-                this.dialog_config.dlg_first.operate_width = 110
-                this.dialog_config.dlg_second.operate_width = 110
+                this.dialog_config.dlg_first.operate_width = 56
+                this.dialog_config.dlg_second.operate_width = 56
             }else{
                 this.table_config.expand_action = true
                 this.dialog_config.dlg_expand_action = true
