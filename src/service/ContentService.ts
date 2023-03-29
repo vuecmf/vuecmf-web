@@ -512,7 +512,7 @@ export default class ContentService extends BaseService{
             }
 
             setTimeout(() => {
-                if(this.table_config.table_list_ref.$refs != null && this.table_config.table_list_ref.$refs.vuecmf_table_ref != null){
+                if(this.table_config.table_list_ref != null && this.table_config.table_list_ref.$refs != null && this.table_config.table_list_ref.$refs.vuecmf_table_ref != null){
                     this.table_config.table_height = document.documentElement.clientHeight - this.table_config.table_list_ref.$refs.vuecmf_table_ref.$el.offsetTop - pagination_height
                 }
             }, 200)

@@ -51,7 +51,7 @@ export default abstract class BaseService{
      */
     vuecmfException = (msg: string):void => {
         this.message.error(msg)
-        this.logoutEvent()
+        if(msg.indexOf('登录已失效') != -1) this.logoutEvent()
     }
 
 }
