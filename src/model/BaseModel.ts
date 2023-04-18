@@ -90,8 +90,9 @@ export default abstract class Model {
      * @param action_type
      * @param data
      * @param method
+     * @param app_id
      */
-    public request = async (table_name: string,action_type: string,data?:AnyObject, method?: Method): Promise<AnyObject> => {
+    public request = async (table_name: string,action_type: string,data?:AnyObject, method?: Method, app_id?:number): Promise<AnyObject> => {
         if(typeof method == 'undefined') method = 'post'
         const api_maps = store.getters.apiMaps
 
@@ -102,7 +103,8 @@ export default abstract class Model {
                 data: {
                     data: {
                         table_name: table_name,
-                        action_type: action_type
+                        action_type: action_type,
+                        app_id: app_id
                     }
                 }
             }).then(async (res) => {
