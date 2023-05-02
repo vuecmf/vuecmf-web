@@ -111,7 +111,6 @@ export default abstract class Model {
                 if(res.status === 200 && res.data.code == 0){
                     if(typeof api_maps[table_name] == 'undefined') api_maps[table_name] = []
                     api_maps[table_name][action_type] = res.data.data
-                    await store.dispatch('setApiMaps', api_maps)
                     return await this.httpAxios.request({
                         method: method,
                         url: res.data.data,

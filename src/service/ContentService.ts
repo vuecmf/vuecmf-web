@@ -27,7 +27,7 @@ import store from "@/store";
 export default class ContentService extends BaseService{
     //列表组件后端API设置
     table_config = reactive({
-        model_table_name: '',                   //当前模型列表表名
+        model_table_name: ref(''),        //当前模型列表表名
         current_row: ref<AnyObject>(),          //当前选择记录的数据
         current_table_service: ref<AnyObject>(),//当前列表表格服务类实例
 
@@ -144,17 +144,20 @@ export default class ContentService extends BaseService{
 
     constructor() {
         super();
+        this.dataModel = new DataModel()
+        this.dialogTableService = {}
+        this.secondDialogTableService = {}
+
         //当前模型默认动作
         this.table_config.model_table_name = router.currentRoute.value.meta.table_name as string
-        const default_ation_type = router.currentRoute.value.meta.default_action_type
+        const default_ation_type = router.currentRoute.value.meta.default_action_type as string
 
         //当前模型所有动作列表
         const current_action_list = store.getters.getActionTypeByTableName(this.table_config.model_table_name)
 
         //列表组件后端API设置, 有权限的则取出URL, 否则设置为空
-        this.dataModel = new DataModel()
         //列表API
-        this.table_config.server = current_action_list.indexOf('list') != -1 ? this.dataModel.getApiUrl(this.table_config.model_table_name, default_ation_type as string) : ''
+        this.table_config.server = current_action_list.indexOf('list') != -1 ? this.dataModel.getApiUrl(this.table_config.model_table_name, default_ation_type) : ''
         //保存数据API
         this.table_config.save_server = current_action_list.indexOf('save') != -1 ? this.dataModel.getApiUrl(this.table_config.model_table_name, 'save') : ''
         //删除数据API
@@ -211,10 +214,6 @@ export default class ContentService extends BaseService{
             this.table_config.statusDisabled = this.event_obj.value.statusDisabled
 
         }
-
-        this.dialogTableService = {}
-        this.secondDialogTableService = {}
-
     }
 
     /**

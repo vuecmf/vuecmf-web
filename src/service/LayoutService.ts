@@ -63,7 +63,7 @@ export default class LayoutService extends BaseService{
             //加载路由
             this.loadRouter(this.nav_menu_list.value)
 
-            nextTick(() => {
+            return nextTick(() => {
                 //默认第一个主菜单项选中
                 if(typeof this.nav_menu_list.value != 'undefined'){
                     const main_menu_keys = Object.keys(this.nav_menu_list.value)
@@ -72,9 +72,8 @@ export default class LayoutService extends BaseService{
                         this.selectMainMenu(this.main_menu_active.value)
                     }
                 }
+                return Promise.resolve('router loaded')
             })
-
-            return Promise.resolve('router loaded')
 
         }).catch((res) => {
             if(res.code == 1003){
@@ -387,7 +386,9 @@ export default class LayoutService extends BaseService{
      */
     init = ():void => {
         //加载菜单数据
-        this.loadMenu()
+        this.loadMenu().then(r => {
+            console.log(r)
+        })
 
         onMounted(() => {
             //初始化标签列表
