@@ -373,80 +373,82 @@ export default class ContentService extends BaseService{
         }
 
         const linkage:AnyObject = tableService.table_config.relation_info.linkage
-        Object.keys(linkage).forEach((field_id) => {
-            let form_field_name = ''
-            const form_info:AnyObject = tableService.table_config.form_info
-            const form_field_info:AnyObject = []  //表单字段信息
-            Object.values(form_info).forEach((form_item) => {
-                if(form_item.field_id == field_id){
-                    form_field_name = form_item.field_name
-                    if(form_field_name == "type" && form_item.label == "控件类型"){
-                        form_field_name = "model_field_id"
+        if(linkage != null){
+            Object.keys(linkage).forEach((field_id) => {
+                let form_field_name = ''
+                const form_info:AnyObject = tableService.table_config.form_info
+                const form_field_info:AnyObject = []  //表单字段信息
+                Object.values(form_info).forEach((form_item) => {
+                    if(form_item.field_id == field_id){
+                        form_field_name = form_item.field_name
+                        if(form_field_name == "type" && form_item.label == "控件类型"){
+                            form_field_name = "model_field_id"
+                        }
                     }
-                }
-                form_field_info[form_item.field_id] = form_item.field_name
-            })
+                    form_field_info[form_item.field_id] = form_item.field_name
+                })
 
-            const sel_val = select_row != null && typeof select_row[form_field_name] != 'undefined' ? select_row[form_field_name] : ''
+                const sel_val = select_row != null && typeof select_row[form_field_name] != 'undefined' ? select_row[form_field_name] : ''
 
-            if(sel_val != ''){
-                const data:AnyObject = {}
-                data[form_field_name] = sel_val
-                const linkage_list:AnyObject = linkage[field_id]
+                if(sel_val != ''){
+                    const data:AnyObject = {}
+                    data[form_field_name] = sel_val
+                    const linkage_list:AnyObject = linkage[field_id]
 
-                Object.values(linkage_list).forEach((item)=>{
-                    this.dataModel.request(item.action_table_name, item.action_type, {data: data}).then((res:AnyObject)=>{
-                        if(res.status == 200){
-                            if(res.data.code == 0){
-                                const form_list: string[] = []
-                                const res_list:AnyObject[] = []
+                    Object.values(linkage_list).forEach((item)=>{
+                        this.dataModel.request(item.action_table_name, item.action_type, {data: data}).then((res:AnyObject)=>{
+                            if(res.status == 200){
+                                if(res.data.code == 0){
+                                    const form_list: string[] = []
+                                    const res_list:AnyObject[] = []
 
-                                if(res.data.data != null){
-                                    Object.keys(res.data.data).forEach((key) => {
-                                        if(form_field_name == "model_field_id"){
-                                            //若是表单中的默认值为下拉框选择，则选项值需要转换成字符串
-                                            res.data.data[key].value = res.data.data[key].value.toString()
-                                        }
-                                        form_list.push(res.data.data[key].value)
-                                        res_list.push(res.data.data[key])
-                                    })
-                                }
+                                    if(res.data.data != null){
+                                        Object.keys(res.data.data).forEach((key) => {
+                                            if(form_field_name == "model_field_id"){
+                                                //若是表单中的默认值为下拉框选择，则选项值需要转换成字符串
+                                                res.data.data[key].value = res.data.data[key].value.toString()
+                                            }
+                                            form_list.push(res.data.data[key].value)
+                                            res_list.push(res.data.data[key])
+                                        })
+                                    }
 
-                                tableService.table_config.relation_info.options[item.relation_field_id] = res_list
+                                    tableService.table_config.relation_info.options[item.relation_field_id] = res_list
 
-                                //先找到关联下拉框的字段名, 然后根据当前字段名找到当前选择的值，再在判断在拉取的下拉列表数据中是否存在， 不存在则删除当前选择的值
-                                const relation_field_name = typeof form_field_info[item.relation_field_id] != 'undefined' ? form_field_info[item.relation_field_id] : ''
-                                if(relation_field_name != '' && typeof select_row[relation_field_name] != 'undefined'){
+                                    //先找到关联下拉框的字段名, 然后根据当前字段名找到当前选择的值，再在判断在拉取的下拉列表数据中是否存在， 不存在则删除当前选择的值
+                                    const relation_field_name = typeof form_field_info[item.relation_field_id] != 'undefined' ? form_field_info[item.relation_field_id] : ''
+                                    if(relation_field_name != '' && typeof select_row[relation_field_name] != 'undefined'){
 
-                                    if(typeof select_row[relation_field_name] == 'object'){
-                                        const tmp_sel:string[] = []
-                                        if(select_row[relation_field_name] != null){
-                                            select_row[relation_field_name].forEach((sub_id:string) => {
-                                                if(form_list.indexOf(sub_id) != -1){
-                                                    tmp_sel.push(sub_id)
-                                                }
-                                            })
-                                        }
-                                        select_row[relation_field_name] = tmp_sel
-                                    }else{
-                                        if(form_list.indexOf(select_row[relation_field_name]) == -1){
-                                            select_row[relation_field_name] = null
+                                        if(typeof select_row[relation_field_name] == 'object'){
+                                            const tmp_sel:string[] = []
+                                            if(select_row[relation_field_name] != null){
+                                                select_row[relation_field_name].forEach((sub_id:string) => {
+                                                    if(form_list.indexOf(sub_id) != -1){
+                                                        tmp_sel.push(sub_id)
+                                                    }
+                                                })
+                                            }
+                                            select_row[relation_field_name] = tmp_sel
+                                        }else{
+                                            if(form_list.indexOf(select_row[relation_field_name]) == -1){
+                                                select_row[relation_field_name] = null
+                                            }
                                         }
                                     }
+
+                                }else{
+                                    this.message.error('获取下拉选项失败:' + res.data.msg)
                                 }
 
                             }else{
-                                this.message.error('获取下拉选项失败:' + res.data.msg)
+                                this.vuecmfException('获取下拉选项失败')
                             }
-
-                        }else{
-                            this.vuecmfException('获取下拉选项失败')
-                        }
+                        })
                     })
-                })
-            }
+                }
 
-        })
+            })
+        }
 
         if(tableService.import_config.edit_form_ref != undefined){
             tableService.import_config.edit_form_ref.validate()

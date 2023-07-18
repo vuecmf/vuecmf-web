@@ -1,11 +1,11 @@
 # vuecmf
-VueCMF内容管理快速开发框架v2.1(前端)
+VueCMF内容管理快速开发框架v2.1+(前端)
 
 前端：
 
 v2.0.x  https://gitee.com/emei/vuecmf
 
-v2.1.x  https://gitee.com/emei/vuecmf-web
+v2.1+  https://gitee.com/emei/vuecmf-web
 
 后端：
 
