@@ -28,12 +28,12 @@ module.exports = {
 		config.optimization.minimize(true);
 		config.optimization.splitChunks({
 			chunks: 'all',
+            maxSize: 300000,
 			cacheGroups: {
 				vendors: { //vendor 是导入的第三方依赖包
 					name: 'chunk-vendors',
 					test: /[\\/]node_modules[\\/]/,
 					chunks: 'initial',
-					maxSize: 300000,
 					priority: 1  //优先级：数字越大优先级越高
 				},
 				elementPlus: {

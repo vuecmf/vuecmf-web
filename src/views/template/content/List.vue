@@ -290,4 +290,5 @@ export default defineComponent({
 .cell{
   .el-button{ margin: 3px;}
 }
+.el-dropdown-menu{ max-height: 260px;}
 </style>
