@@ -11,6 +11,7 @@ import router from "@/router";
 import {AnyObject} from "@/typings/vuecmf";
 import {ElMessage} from "element-plus/es";
 import store from "@/store";
+import LoginService from "@/service/LoginService";
 
 /**
  * 事件服务基类
@@ -23,6 +24,8 @@ export default abstract class BaseEvent{
     table_name: string                                      //当前模型表名
     dataService: AnyObject                                  //服务类实例
     dataModel: AnyObject                                    //数据模型实例
+
+    loginUserInfo: AnyObject|false //登录用户信息
 
     //表格事件配置
     table_event = reactive({
@@ -45,6 +48,9 @@ export default abstract class BaseEvent{
         this.action_type_list = store.getters.getActionTypeByTableName(this.table_name)
         this.default_expand_all = true
         this.add_btn_visible = this.action_type_list.indexOf('save') != -1
+
+        const loginService = new LoginService()
+        this.loginUserInfo = loginService.getLoginUser()
 
         if(router.currentRoute.value.meta.is_tree == 10 && this.add_btn_visible){
             //表格行事件配置

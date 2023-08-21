@@ -39,6 +39,7 @@ export default class AdminEvent extends BaseEvent{
         //行删除按钮是否显示
         this.delBtnVisible = (row: AnyObject): boolean => {
             if(row.is_super != 10){
+                if(this.loginUserInfo != false && this.loginUserInfo['username'] == row.username) return false;
                 return action_type_list.indexOf('delete') != -1
             }else{
                 return false
@@ -60,8 +61,10 @@ export default class AdminEvent extends BaseEvent{
      * 是否显示表格行事件按钮
      * @param row
      */
-    showCallback = (row: AnyObject): boolean => row.is_super != 10
-
+    showCallback = (row: AnyObject): boolean => {
+        if(this.loginUserInfo != false && this.loginUserInfo['username'] == row.username) return false;
+        return row.is_super != 10
+    }
 
     /**
      * 打开设置角色对话框
