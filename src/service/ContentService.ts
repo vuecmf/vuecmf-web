@@ -105,6 +105,7 @@ export default class ContentService extends BaseService{
             detailBtnVisible: ():boolean => true,      //是否显示详情按钮
             editBtnVisible: ():boolean => true,        //是否显示编辑按钮
             delBtnVisible: ():boolean => true,         //是否显示删除按钮
+            statusDisabled: (row:AnyObject):boolean => false,    //列表中每行的状态切换是否可用
             server: '',                                //获取列表的API地址
             import_server: '',                         //批量导入的API地址
             save_server: '',                           //单个保存的API地址
@@ -124,6 +125,7 @@ export default class ContentService extends BaseService{
             detailBtnVisible: ():boolean => true,      //是否显示详情按钮
             editBtnVisible: ():boolean => true,        //是否显示编辑按钮
             delBtnVisible: ():boolean => true,         //是否显示删除按钮
+            statusDisabled: (row:AnyObject):boolean => false,    //列表中每行的状态切换是否可用
             server: '',                                //获取列表的API地址
             import_server: '',                         //批量导入的API地址
             save_server: '',                           //单个保存的API地址

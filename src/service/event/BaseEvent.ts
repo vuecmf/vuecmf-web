@@ -172,10 +172,8 @@ export default abstract class BaseEvent{
      * @param permission_type  权限类型 role = 角色， user = 用户
      */
     setPermission = (permission_param:AnyObject, permission_type = 'role'):void => {
-        const action_param = typeof permission_param['role_name'] != 'undefined' ? permission_param : {}
-
         //获取所有权限列表
-        this.dataModel.getActionList(this.table_name, action_param).then((res:AnyObject) => {
+        this.dataModel.getActionList(this.table_name, permission_param).then((res:AnyObject) => {
             if(res.status == 200 && res.data.code == 0){
                 this.dataService.permission_config.permission_action_list = res.data.data
 

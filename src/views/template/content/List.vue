@@ -128,6 +128,13 @@
           @beforeLoadTable="dialogBeforeLoadTable"
           :expand_action="dlg_expand_action"
       >
+        <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
+        <template #formatRow="{ row, field }">
+          <span v-if=" field === 'status' ">
+            <el-switch v-model="row[field]" :disabled="dlg_first.statusDisabled(row)" @change="(value) => firstDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+          </span>
+        </template>
+
         <!-- 列表每行 自定义按钮操作 -->
         <template #rowAction="{ row, service }">
           <template v-if=" typeof dialog_table_event.row_event != 'undefined' ">
@@ -174,6 +181,13 @@
           @beforeLoadTable="secondDialogBeforeLoadTable"
           :expand_action="dlg_expand_action"
       >
+        <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
+        <template #formatRow="{ row, field }">
+          <span v-if=" field === 'status' ">
+            <el-switch v-model="row[field]" :disabled="dlg_second.statusDisabled(row)" @change="(value) => firstDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+          </span>
+        </template>
+
       </vuecmf-table>
     </template>
   </vuecmf-dialog>

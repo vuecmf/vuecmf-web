@@ -5,11 +5,11 @@
       <span>{{ menu_item_list.title }}</span>
     </template>
     <template v-for="item in menu_item_list.children" >
-      <el-menu-item :index="item.mid" :key="item.mid" v-if="!item.children">
+      <el-menu-item :index="item.mid" :key="item.mid" v-if="!item.children && item.default_action_type != ''">
         <i class="el-icon" v-if="item.icon"><component :is="item.icon"></component></i>
         <span>{{ item.title }}</span>
       </el-menu-item>
-      <template v-else>
+      <template v-else-if="item.default_action_type != ''">
         <vuecmf-layout-aside-menu-item :menu_item_list="item" :key="item.mid"></vuecmf-layout-aside-menu-item>
       </template>
     </template>

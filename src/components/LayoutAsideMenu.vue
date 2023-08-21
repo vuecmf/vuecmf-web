@@ -22,11 +22,11 @@
       @select="addTab"
   >
     <template v-for="item in aside_menu_list" >
-      <el-menu-item :index="item.mid" :key="item.mid" v-if="!item.children">
+      <el-menu-item :index="item.mid" :key="item.mid" v-if="!item.children && item.default_action_type != ''">
         <i class="el-icon" v-if="item.icon"><component :is="item.icon"></component></i>
         <template #title>{{ item.title }}</template>
       </el-menu-item>
-      <vuecmf-layout-aside-menu-item :menu_item_list="item" :key="item.mid" v-else></vuecmf-layout-aside-menu-item>
+      <vuecmf-layout-aside-menu-item :menu_item_list="item" :key="item.mid" v-else-if="item.children"></vuecmf-layout-aside-menu-item>
     </template>
 
   </el-menu>
