@@ -54,9 +54,10 @@ export default class DataModel extends BaseModel{
     /**
      * 获取所有用户
      * @param table_name
+     * @param data  如 {username: 'zhangsan'}
      */
-    public getAllUsers = (table_name: string): Promise<AnyObject> => {
-        return this.request(table_name, 'get_all_users' )
+    public getAllUsers = (table_name: string, data:AnyObject): Promise<AnyObject> => {
+        return this.request(table_name, 'get_all_users',{data: data} )
     }
 
     /**
@@ -81,9 +82,10 @@ export default class DataModel extends BaseModel{
     /**
      * 获取所有角色
      * @param table_name
+     * @param data  如 {role_name: '管理员'}
      */
-    public getAllRoles = (table_name: string): Promise<AnyObject> => {
-        return this.request(table_name, 'get_all_roles' )
+    public getAllRoles = (table_name: string, data:AnyObject): Promise<AnyObject> => {
+        return this.request(table_name, 'get_all_roles',{data: data})
     }
 
     /**

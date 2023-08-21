@@ -175,11 +175,12 @@ export default abstract class BaseEvent{
     /**
      * 打开设置权限对话框
      * @param permission_param 获取已有权限的参数
+     * @param login_data 当前登录用户信息
      * @param permission_type  权限类型 role = 角色， user = 用户
      */
-    setPermission = (permission_param:AnyObject, permission_type = 'role'):void => {
+    setPermission = (permission_param:AnyObject, login_data:AnyObject, permission_type = 'role'):void => {
         //获取所有权限列表
-        this.dataModel.getActionList(this.table_name, permission_param).then((res:AnyObject) => {
+        this.dataModel.getActionList(this.table_name, login_data).then((res:AnyObject) => {
             if(res.status == 200 && res.data.code == 0){
                 this.dataService.permission_config.permission_action_list = res.data.data
 

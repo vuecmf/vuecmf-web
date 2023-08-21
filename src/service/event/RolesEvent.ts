@@ -66,10 +66,15 @@ export default class RolesEvent extends BaseEvent{
     setRolePermission = (selectRow:AnyObject):void => {
         this.current_role = selectRow
         this.dataService.permission_config.current_user_or_role = this.current_role.role_name
+        let login_data = {}
 
-        this.setPermission({
-            role_name: this.current_role.role_name
-        })
+        if(this.current_role.pid > 0) {
+            login_data = {role_name: this.current_role.role_name}
+        }else if(this.current_role.pid == 0 && this.loginUserInfo != false && this.loginUserInfo['role'] != '超级管理员'){
+            login_data = {username: this.loginUserInfo['username']}
+        }
+
+        this.setPermission({role_name: this.current_role.role_name}, login_data)
     }
 
     /**
@@ -89,8 +94,9 @@ export default class RolesEvent extends BaseEvent{
         this.current_role = selectRow
         this.dataService.assign_config.assigned_data = []
         this.dataService.assign_config.assign_dlg_title = '设置(' + this.current_role.role_name + ')用户'
+        const username = this.loginUserInfo != false ? this.loginUserInfo['username'] : '';
 
-        this.dataModel.getAllUsers(this.table_name).then((res:AnyObject) => {
+        this.dataModel.getAllUsers(this.table_name,{username: username}).then((res:AnyObject) => {
             if(res.status == 200 && res.data.code == 0){
                 res.data.data.forEach((item:AnyObject) => {
                     item.disabled = false

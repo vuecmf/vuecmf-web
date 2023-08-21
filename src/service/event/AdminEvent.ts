@@ -74,8 +74,9 @@ export default class AdminEvent extends BaseEvent{
         this.current_user = selectRow
         this.dataService.assign_config.assigned_data = []
         this.dataService.assign_config.assign_dlg_title = '设置(' + this.current_user.username + ')角色'
+        const role_name = this.loginUserInfo != false ? this.loginUserInfo['role'] : '';
 
-        this.dataModel.getAllRoles(this.table_name).then((res:AnyObject) => {
+        this.dataModel.getAllRoles(this.table_name, {role_name: role_name}).then((res:AnyObject) => {
             if(res.status == 200 && res.data.code == 0){
                 res.data.data.forEach((item:AnyObject) => {
                     item.disabled = false
@@ -128,10 +129,15 @@ export default class AdminEvent extends BaseEvent{
     setUserPermission = (selectRow:AnyObject):void => {
         this.current_user = selectRow
         this.dataService.permission_config.current_user_or_role = this.current_user.username
+        const username = this.loginUserInfo != false ? this.loginUserInfo['username'] : '';
+        let login_data = {}
+        if(username != '' && this.loginUserInfo != false && this.loginUserInfo['role'] != '超级管理员') {
+            login_data = {
+                username: username
+            }
+        }
 
-        this.setPermission({
-            username: this.current_user.username
-        }, 'user')
+        this.setPermission({username: this.current_user.username }, login_data,'user')
     }
 
     /**
