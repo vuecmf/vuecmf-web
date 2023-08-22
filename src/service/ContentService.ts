@@ -502,6 +502,28 @@ export default class ContentService extends BaseService{
         }
     }
 
+    /**
+     * 修改一级弹窗行数据的状态
+     * @param value 状态更新后的值
+     * @param row  当前选择行数据
+     */
+    firstDlgChangeStatus = (value: string|number, row: AnyObject): void => {
+        if(value != '' && typeof row.id != 'undefined' && row.id != '' && row.id != null && typeof this.table_config.current_table_service == 'object'){
+            this.dialogTableService.uploadDataService.saveRow(row)
+        }
+    }
+
+    /**
+     * 修改二级弹窗行数据的状态
+     * @param value 状态更新后的值
+     * @param row  当前选择行数据
+     */
+    secondDlgChangeStatus = (value: string|number, row: AnyObject): void => {
+        if(value != '' && typeof row.id != 'undefined' && row.id != '' && row.id != null && typeof this.table_config.current_table_service == 'object'){
+            this.secondDialogTableService.uploadDataService.saveRow(row)
+        }
+    }
+
 
     /**
      * 更新表格高度, 列表行操作功能是否展开

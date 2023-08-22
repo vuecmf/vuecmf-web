@@ -184,7 +184,7 @@
         <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
         <template #formatRow="{ row, field }">
           <span v-if=" field === 'status' ">
-            <el-switch v-model="row[field]" :disabled="dlg_second.statusDisabled(row)" @change="(value) => firstDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+            <el-switch v-model="row[field]" :disabled="dlg_second.statusDisabled(row)" @change="(value) => secondDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
           </span>
         </template>
 
@@ -274,6 +274,8 @@ const loadForm = service.loadForm
 const dlgFirstOpened = service.dlgFirstOpened
 const dlgSecondOpened = service.dlgSecondOpened
 const changeStatus = service.changeStatus
+const firstDlgChangeStatus = service.firstDlgChangeStatus
+const secondDlgChangeStatus = service.secondDlgChangeStatus
 
 const showSetAssignDlg = () => set_assign_dlg.value = false
 const showPermissionDlg = () => permission_dlg.value = false
