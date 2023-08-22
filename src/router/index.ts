@@ -6,7 +6,7 @@
 // | Author: vuecmf <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw} from 'vue-router'
 import store from '@/store'
 import LayoutService from "@/service/LayoutService"
 import { ElMessage } from 'element-plus'
@@ -45,7 +45,7 @@ const routes: Array<RouteRecordRaw> = [
  * 创建路由
  */
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: process.env.NODE_ENV === 'production' ? createWebHistory(process.env.BASE_URL) : createWebHashHistory(process.env.BASE_URL),
   routes
 })
 

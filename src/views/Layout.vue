@@ -65,7 +65,7 @@
 <script lang="ts" setup>
 import { ArrowRight } from '@element-plus/icons-vue'
 import LayoutService from "@/service/LayoutService"
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import zhCn from "element-plus/dist/locale/zh-cn.mjs"
 
 const service = new LayoutService()
 
