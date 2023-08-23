@@ -53,6 +53,9 @@ export default abstract class Model {
                 return Promise.reject(config);
             }
         }, error => {
+            if(error.data == null && error.response != null){
+                return Promise.reject(error.response.data)
+            }
             return Promise.reject(error.data.error.message)
         })
 

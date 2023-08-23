@@ -11,10 +11,12 @@
       active-text-color="#409EFF"
       @select="selectMainMenu"
   >
-    <el-menu-item :index="item.mid" :key="key" v-for="(item,key) in nav_menu_list">
-      <i class="el-icon" v-if="item.icon"><component :is="item.icon"></component></i>
-      <span>{{ item.title }}</span>
-    </el-menu-item>
+    <template :key="key" v-for="(item,key) in nav_menu_list">
+      <el-menu-item :index="item.mid" v-if="item.children != null">
+        <i class="el-icon" v-if="item.icon"><component :is="item.icon"></component></i>
+        <span>{{ item.title }}</span>
+      </el-menu-item>
+    </template>
   </el-menu>
   <!-- main-menu end -->
 
