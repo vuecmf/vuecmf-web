@@ -1,16 +1,16 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import {reactive, ref} from "vue";
 import router from "@/router";
-import {AnyObject} from "@/typings/vuecmf";
+import type {AnyObject} from "@/typings/vuecmf";
 import {ElMessage} from "element-plus/es";
-import store from "@/store";
+import { useStore } from '@/stores';
 import LoginService from "@/service/LoginService";
 
 /**
@@ -41,11 +41,14 @@ export default abstract class BaseEvent{
         fields_event: ref()     //表格字段事件处理
     })
 
+    public store
+
     protected constructor(dataService: AnyObject, dataModel: AnyObject) {
+        this.store = useStore()
         this.dataService = dataService
         this.dataModel = dataModel
         this.table_name = router.currentRoute.value.meta.table_name as string
-        this.action_type_list = store.getters.getActionTypeByTableName(this.table_name)
+        this.action_type_list = this.store.getActionTypeByTableName(this.table_name)
         this.default_expand_all = true
         this.add_btn_visible = this.action_type_list.indexOf('save') != -1
 
@@ -339,7 +342,7 @@ export default abstract class BaseEvent{
      * @param dlg_config  弹窗配置信息
      */
     tablePermission = (table_name: string, dlg_config: AnyObject):void => {
-        const action_type_list = store.getters.getActionTypeByTableName(table_name)
+        const action_type_list = this.store.getActionTypeByTableName(table_name)
 
         //详情按钮功能
         dlg_config.detailBtnVisible = () => action_type_list.indexOf('list') != -1

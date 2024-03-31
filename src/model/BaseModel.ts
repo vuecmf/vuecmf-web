@@ -1,15 +1,16 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
-import axios, {AxiosInstance, Method} from "axios";
-import qs from "qs";
-import {AnyObject} from "@/typings/vuecmf";
-import store from '@/store';
+import axios from "axios";
+import type {AxiosInstance, Method} from "axios";
+import * as qs from "qs";
+import type {AnyObject} from "@/typings/vuecmf";
+import { useStore } from '@/stores';
 
 
 /**
@@ -19,12 +20,14 @@ export default abstract class Model {
 
     public token: string  //登录后的token
     public httpAxios: AxiosInstance
+    public store
 
     constructor() {
+        this.store = useStore()
         this.httpAxios = axios.create()
         this.httpAxios.defaults.timeout = 30000
 
-        this.httpAxios.defaults.baseURL = process.env.VUE_APP_BASE_API
+        this.httpAxios.defaults.baseURL = import.meta.env.VITE_APP_BASE_API
 
         //允许跨域携带cookie信息
         this.httpAxios.defaults.withCredentials = true
@@ -97,8 +100,7 @@ export default abstract class Model {
      */
     public request = async (table_name: string,action_type: string,data?:AnyObject, method?: Method, app_id?:number): Promise<AnyObject> => {
         if(typeof method == 'undefined') method = 'post'
-        const api_maps = store.getters.apiMaps
-
+        const api_maps:AnyObject = this.store.apiMaps
         if(typeof api_maps[table_name] == 'undefined' || typeof api_maps[table_name][action_type] == 'undefined'){
             return await this.httpAxios.request({
                 method: 'post',
@@ -158,9 +160,9 @@ export default abstract class Model {
      * @param action_type
      */
     public getApiUrl = (table_name: string,action_type: string): string => {
-        const api_maps = store.getters.apiMaps
+        const api_maps:AnyObject = this.store.apiMaps
         if(typeof api_maps[table_name] != 'undefined' && typeof api_maps[table_name][action_type] != 'undefined'){
-            return api_maps[table_name][action_type]
+            return import.meta.env.VITE_APP_BASE_API + api_maps[table_name][action_type]
         }else{
             return ''
         }
@@ -172,7 +174,7 @@ export default abstract class Model {
      * @param action_type
      */
     public getFullApiUrl = (table_name: string,action_type: string): string => {
-        const api_maps = store.getters.apiMaps
+        const api_maps:AnyObject = this.store.apiMaps
         if(typeof api_maps[table_name] != 'undefined' && typeof api_maps[table_name][action_type] != 'undefined'){
             return this.httpAxios.defaults.baseURL + api_maps[table_name][action_type]
         }else{

@@ -34,6 +34,7 @@
 
 <script lang="ts">
 import {defineComponent} from "vue"
+import type { PropType } from 'vue'
 import VuecmfLayoutAsideMenuItem from "@/components/LayoutAsideMenuItem.vue"
 
 export default defineComponent({
@@ -43,7 +44,7 @@ export default defineComponent({
     aside_menu_active: String,
     is_side_collapse: Boolean,
     aside_menu_list: Object,
-    collapse: Function,
+    collapse: Function as PropType<() => void>,
     addTab: Function,
   },
 })

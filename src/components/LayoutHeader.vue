@@ -42,6 +42,7 @@
 import {defineComponent} from "vue"
 import LoginService from "@/service/LoginService";
 import { Avatar } from '@element-plus/icons-vue'
+import type {AnyObject} from "@/typings/vuecmf";
 
 
 export default defineComponent({
@@ -54,7 +55,7 @@ export default defineComponent({
   },
   setup() {
     const loginService = new LoginService()
-    const user_info = loginService.getLoginUser()
+    const user_info = loginService.getLoginUser() as AnyObject
 
     const logout = (command:string):void => {
       if(command == 'logout'){

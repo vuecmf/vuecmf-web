@@ -1,15 +1,15 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 
 import BaseEvent from "@/service/event/BaseEvent";
-import {AnyObject} from "@/typings/vuecmf";
-import store from "@/store";
+import type {AnyObject} from "@/typings/vuecmf";
+import { useStore } from '@/stores';
 
 
 /**
@@ -17,10 +17,12 @@ import store from "@/store";
  */
 export default class MenuEvent extends BaseEvent{
 
+    public store
+
     constructor() {
         super({}, {});
-
-        const action_type_list = store.getters.getActionTypeByTableName('menu')
+        this.store = useStore()
+        const action_type_list = this.store.getActionTypeByTableName('menu')
 
         //若是内置类型不显示编辑按钮
         this.editBtnVisible = (row: AnyObject): boolean => {

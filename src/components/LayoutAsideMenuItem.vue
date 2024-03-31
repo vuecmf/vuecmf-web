@@ -18,11 +18,12 @@
 
 <script lang="ts">
 import {defineComponent} from "vue"
+import type { PropType } from 'vue'
 
 export default defineComponent({
   name: "vuecmf-layout-aside-menu-item",
   props: {
-    menu_item_list: Object
+    menu_item_list: Object as PropType<any>
   },
 })
 </script>

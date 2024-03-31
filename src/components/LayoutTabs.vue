@@ -7,12 +7,12 @@
             :id=" 'vucmf_tag_' + tag.path + '_' + idx "
             v-for="(tag,idx) in tags_list"
             :key="'vucmf_tag_' + tag.path"
-            :type=" current_tab_index === idx ? '' : 'info' "
+            :type=" current_tab_index === idx ? 'primary' : 'info' "
             effect="plain"
-            :closable=" idx > 0 "
+            :closable=" idx as number > 0 "
             :disable-transitions
                 ="true"
-            @close="closeTag(tag)"
+            @close="closeTag?.(tag)"
             @click="selectTab"
         >
           {{ tag.title }}
@@ -51,6 +51,8 @@
 
 <script lang="ts">
 import {defineComponent} from "vue"
+import type { PropType } from 'vue'
+import type {Tag, TagList} from "@/typings/vuecmf";
 
 export default defineComponent({
   name: "LayoutTabs",
@@ -58,15 +60,15 @@ export default defineComponent({
     current_tab_index: Number,
     left_disabled: Boolean,
     right_disabled: Boolean,
-    tags_list: Object,
+    tags_list: Object as PropType<TagList>,
     scroll_x: Number,
     scrollLeft: Function,
     scrollRight: Function,
-    closeTag: Function,
+    closeTag: Function as PropType<(tag: Tag) => void>,
     manageVuecmfTabs: Function,
     selectTab: Function,
-    fullScreen: Function,
-    reloadTabPage: Function,
+    fullScreen: Function as PropType<() => void>,
+    reloadTabPage: Function as PropType<() => void>,
   },
 })
 </script>

@@ -1,15 +1,15 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import BaseEvent from "@/service/event/BaseEvent";
-import {AnyObject} from "@/typings/vuecmf";
+import type {AnyObject} from "@/typings/vuecmf";
 import {ElMessage} from "element-plus/es";
-import store from "@/store";
+import { useStore } from '@/stores';
 
 
 /**
@@ -19,9 +19,11 @@ export default class RolesEvent extends BaseEvent{
 
     current_role: AnyObject //当前选择的角色信息
 
+    public store
+
     constructor(dataService: AnyObject,dataModel: AnyObject) {
         super(dataService, dataModel);
-
+        this.store = useStore()
         //表格事件配置
         this.table_event.tool_event = []
 
@@ -35,7 +37,7 @@ export default class RolesEvent extends BaseEvent{
         this.current_role = {}
 
         //表格行事件权限控制
-        const action_type_list = store.getters.getActionTypeByTableName('roles')
+        const action_type_list = this.store.getActionTypeByTableName('roles')
         this.table_event.row_event.forEach((item: AnyObject) => {
             if(item.label == '添加子角色'){
                 item.visible = action_type_list.indexOf('save') != -1

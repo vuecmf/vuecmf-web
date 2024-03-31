@@ -1,24 +1,27 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import BaseEvent from "@/service/event/BaseEvent";
-import {AnyObject} from "@/typings/vuecmf";
-import store from "@/store";
+import type {AnyObject} from "@/typings/vuecmf";
+import { useStore } from '@/stores';
 
 
 /**
  * 模型事件服务类
  */
 export default class ModelConfigEvent extends BaseEvent{
+
+    public store
+
     constructor(dataService: AnyObject,dataModel: AnyObject) {
         super(dataService, dataModel);
-
-        const model_config_action_type_list = store.getters.getActionTypeByTableName('model_config')
+        this.store = useStore()
+        const model_config_action_type_list = this.store.getActionTypeByTableName('model_config')
 
         //若是内置模型不显示编辑按钮
         this.editBtnVisible = (row: AnyObject): boolean => {
@@ -59,7 +62,7 @@ export default class ModelConfigEvent extends BaseEvent{
 
         //表格行事件权限控制
         this.table_event.row_event.forEach((item: AnyObject) => {
-            const action_type_list = store.getters.getActionTypeByTableName(item.table_name)
+            const action_type_list = this.store.getActionTypeByTableName(item.table_name)
             item.visible = action_type_list.indexOf('list') != -1
         })
 
@@ -82,7 +85,7 @@ export default class ModelConfigEvent extends BaseEvent{
 
         //按钮权限控制
         this.dialog_table_event.row_event.forEach((item: AnyObject) => {
-            const action_type_list = store.getters.getActionTypeByTableName(item.table_name)
+            const action_type_list = this.store.getActionTypeByTableName(item.table_name)
             item.visible = action_type_list.indexOf('list') != -1
         })
 
@@ -194,7 +197,7 @@ export default class ModelConfigEvent extends BaseEvent{
 
         //按钮权限控制
         this.dialog_table_event.row_event.forEach((item: AnyObject) => {
-            const action_type_list = store.getters.getActionTypeByTableName(item.table_name)
+            const action_type_list = this.store.getActionTypeByTableName(item.table_name)
             item.visible = action_type_list.indexOf('list') != -1
         })
 

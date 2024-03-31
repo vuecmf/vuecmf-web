@@ -18,7 +18,7 @@
     </div>
 
     <div class="copyright">
-      <p>&copy; 2019-2023 <a target="_blank" href="http://www.vuecmf.com/">www.vuecmf.com</a>
+      <p>&copy; 2019-2024 <a target="_blank" href="http://www.vuecmf.com/">www.vuecmf.com</a>
       </p>
     </div>
 

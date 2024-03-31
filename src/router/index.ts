@@ -1,13 +1,14 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
-import {createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw} from 'vue-router'
-import store from '@/store'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
+import type {RouteRecordRaw} from 'vue-router'
+import { useStore } from '@/stores';
 import LayoutService from "@/service/LayoutService"
 import { ElMessage } from 'element-plus'
 
@@ -45,7 +46,7 @@ const routes: Array<RouteRecordRaw> = [
  * 创建路由
  */
 const router = createRouter({
-  history: process.env.NODE_ENV === 'production' ? createWebHistory(process.env.BASE_URL) : createWebHashHistory(process.env.BASE_URL),
+  history: import.meta.env.MODE === 'production' ? createWebHistory(import.meta.env.BASE_URL) : createWebHashHistory(import.meta.env.BASE_URL),
   routes
 })
 
@@ -54,13 +55,14 @@ const router = createRouter({
  */
 router.beforeEach( (to,from, next) => {
   const token = localStorage.getItem('vuecmf_token')
+  const store = useStore()
   if(to.name == 'login'){
     next()
   }else{
     if(token == '' || token == null){
       ElMessage.error('还没有登录或登录超时,请先登录！')
       next({name:'login'});
-    }else if(to.name !== 'welcome' && store.state.nav_menu_list.length == 0){
+    }else if(to.name !== 'welcome' && store.nav_menu_list.length == 0){
       service.loadMenu().then((res:string|void)=> {
         res === 'router loaded' ? next({ path: to.path, query: to.query }) : next()
       })

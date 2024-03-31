@@ -1,18 +1,19 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import BaseService from "./BaseService"
-import {AnyObject, Tag} from "@/typings/vuecmf"
+import type {AnyObject, Tag} from "@/typings/vuecmf"
 import LayoutModel from "@/model/LayoutModel"
 import {computed, nextTick, onMounted} from "vue"
 import router from "@/router"
-import store from '@/store'
+import { useStore } from '@/stores';
 import {ElMessage} from "element-plus";
+
 
 /**
  * 布局服务类
@@ -44,7 +45,6 @@ export default class LayoutService extends BaseService{
     //页面更新区域KEY
     view_key = computed(() => router.currentRoute.value.name as string)
 
-
     constructor() {
         super();
     }
@@ -55,10 +55,11 @@ export default class LayoutService extends BaseService{
      */
     loadMenu = ():Promise<string | void> => {
         const lay = new LayoutModel()
+        const store = useStore()
         return lay.getNavMenu().then((res: AnyObject) =>{
             this.nav_menu_list.value = res.data.nav_menu
-            store.dispatch('setNavMenuList', res.data.nav_menu)
-            store.dispatch('setApiMaps', res.data.api_maps)
+            store.setNavMenuList(res.data.nav_menu)
+            store.setApiMaps(res.data.api_maps)
 
             //加载路由
             this.loadRouter(this.nav_menu_list.value)
@@ -90,6 +91,16 @@ export default class LayoutService extends BaseService{
         })
     }
 
+    /**
+     * 获取视图模板
+     * @param path
+     */
+    getViews = (path: string) => {
+        //加载全部组件
+        let modules = import.meta.glob('@/views/template/**/*.vue')
+        //获取指定组件
+        return modules[import.meta.env.BASE_URL + 'src/views/' + path + '.vue']
+    }
 
     /**
      * 加载路由
@@ -97,13 +108,17 @@ export default class LayoutService extends BaseService{
      */
     loadRouter = (menuList: AnyObject|undefined):void => {
         if(typeof menuList != 'undefined'){
+            //加载全部组件
+            let modules = import.meta.glob('@/views/template/**/*.vue')
+
             for(const key in menuList){
                 if(typeof menuList[key].children != 'undefined' && menuList[key].children != null){
                     this.loadRouter(menuList[key].children)
                 }else{
                     router.addRoute('home', {
                         path: menuList[key].mid,
-                        component: () => import('@/views/' + menuList[key].component_tpl),
+                        //component: this.getViews(menuList[key].component_tpl),
+                        component: modules[import.meta.env.BASE_URL + 'src/views/' + menuList[key].component_tpl + '.vue'],
                         name: menuList[key].path_name.join('-'),
                         meta: {
                             default_action_type: menuList[key].default_action_type, //模型的默认动作类型

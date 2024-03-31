@@ -1,9 +1,9 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import BaseService from "@/service/BaseService";
@@ -11,7 +11,7 @@ import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import LoginModel from "@/model/LoginModel";
 import router from "@/router";
-import {AnyObject} from "@/typings/vuecmf";
+import type {AnyObject} from "@/typings/vuecmf";
 
 
 /**

@@ -1,24 +1,25 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 import BaseService from "@/service/BaseService";
-import {nextTick, onMounted, onUpdated, reactive, ref, ToRefs, toRefs} from "vue";
+import {nextTick, onMounted, onUpdated, reactive, ref, toRefs} from "vue";
+import type {ToRefs} from "vue";
 import router from "@/router";
 import DataModel from "@/model/DataModel";
 import MenuEvent from "@/service/event/MenuEvent";
-import {AnyObject} from "@/typings/vuecmf";
+import type {AnyObject} from "@/typings/vuecmf";
 import DefaultEvent from "@/service/event/DefaultEvent";
 import RolesEvent from "@/service/event/RolesEvent";
 import AdminEvent from "@/service/event/AdminEvent";
 import ModelConfigEvent from "@/service/event/ModelConfigEvent";
 import AppConfigEvent from "@/service/event/AppConfigEvent";
 
-import store from "@/store";
+import { useStore } from '@/stores';
 
 
 /**
@@ -144,8 +145,10 @@ export default class ContentService extends BaseService{
 
     dialog_table_event = ref<AnyObject>()   //设置弹窗中列表事件(如设置字段、表单等)
 
+    public store
     constructor() {
         super();
+        this.store = useStore()
         this.dataModel = new DataModel()
         this.dialogTableService = {}
         this.secondDialogTableService = {}
@@ -155,7 +158,7 @@ export default class ContentService extends BaseService{
         const default_ation_type = router.currentRoute.value.meta.default_action_type as string
 
         //当前模型所有动作列表
-        const current_action_list = store.getters.getActionTypeByTableName(this.table_config.model_table_name)
+        const current_action_list = this.store.getActionTypeByTableName(this.table_config.model_table_name)
 
         //列表组件后端API设置, 有权限的则取出URL, 否则设置为空
         //列表API
@@ -167,7 +170,7 @@ export default class ContentService extends BaseService{
         //批量导入API
         this.table_config.import_server = this.dataModel.getApiUrl(this.table_config.model_table_name, 'save_all')
         //文件上传API
-        this.table_config.upload_server = process.env.VUE_APP_BASE_API + this.dataModel.getApiUrl('upload_file', 'upload')
+        this.table_config.upload_server = import.meta.env.VITE_APP_BASE_API + this.dataModel.getApiUrl('upload_file', 'upload')
 
         //导出文件名
         this.table_config.export_file_name = router.currentRoute.value.meta.title as string

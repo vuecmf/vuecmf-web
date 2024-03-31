@@ -1,26 +1,26 @@
 // +----------------------------------------------------------------------
-// | Copyright (c) 2019~2022 http://www.vuecmf.com All rights reserved.
+// | Copyright (c) 2019~2024 http://www.vuecmf.com All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( https://github.com/vuecmf/vuecmf-web/blob/main/LICENSE )
 // +----------------------------------------------------------------------
-// | Author: vuecmf <tulihua2004@126.com>
+// | Author: vuecmf.com <tulihua2004@126.com>
 // +----------------------------------------------------------------------
 
 
 import BaseEvent from "@/service/event/BaseEvent";
-import {AnyObject} from "@/typings/vuecmf";
-import store from "@/store";
+import type {AnyObject} from "@/typings/vuecmf";
+import { useStore } from '@/stores';
 
 
 export default class AppConfigEvent extends BaseEvent{
     current_app: AnyObject //当前选择的应用信息
-
+    public store
     constructor(dataService: AnyObject,dataModel: AnyObject) {
         super(dataService, dataModel);
-
+        this.store = useStore()
         this.current_app = {}
 
-        const app_config_action_type_list = store.getters.getActionTypeByTableName('app_config')
+        const app_config_action_type_list = this.store.getActionTypeByTableName('app_config')
 
         //若是内置模型不显示编辑按钮
         this.editBtnVisible = (row: AnyObject): boolean => {

@@ -26,7 +26,7 @@
   >
     <!-- 表格头部左边 自定义按钮操作 -->
     <template #headerAction="selectRows">
-      <template v-if=" typeof table_event.tool_event != 'undefined' ">
+      <template v-if=" typeof table_event != 'undefined' && typeof table_event.tool_event != 'undefined' ">
         <el-button :type="item.type" :key="index" @click.prevent="item.event(selectRows)" v-for="(item, index) in table_event.tool_event ">{{ item.label }}</el-button>
       </template>
     </template>
@@ -34,13 +34,13 @@
     <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
     <template #formatRow="{ row, field }">
           <span v-if=" field == 'status' ">
-            <el-switch v-model="row[field]" :disabled="statusDisabled(row)" @change="(value) => changeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+            <el-switch v-model="row[field]" :disabled="statusDisabled(row)" @change="(value:string|number) => changeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
           </span>
     </template>
 
     <!-- 列表每行 自定义按钮操作 -->
     <template #rowAction="{ row, service }">
-      <template v-if=" typeof table_event.row_event == 'object' ">
+      <template v-if=" typeof table_event != 'undefined' && typeof table_event.row_event == 'object' ">
         <template :key="idx" v-for="(item, idx) in table_event.row_event">
           <template v-if="expand_action">
             <el-button :type="item.type" @click.prevent="item.event(row, service)" v-if="item.visible && (typeof item.showCallback == 'undefined' || item.showCallback(row))">
@@ -63,10 +63,10 @@
     <template #content>
       <template :key="key" v-for="(item, key) in permission_action_list">
         <div class="main-checkbox">
-          <el-checkbox  v-model="checkedModelNameList[key]" :indeterminate="modelNameIndeterminate[key]" @change="(value) => modelNameCheckChange(value, key)" >{{ key }}</el-checkbox>
+          <el-checkbox  v-model="checkedModelNameList[key]" :indeterminate="modelNameIndeterminate[key]" @change="(value:AnyObject) => modelNameCheckChange(value, key)" >{{ key }}</el-checkbox>
         </div>
         <div class="child-checkbox">
-          <el-checkbox-group v-model="checkedActionList[key]" @change="(value) => actionCheckChange(value, key)">
+          <el-checkbox-group v-model="checkedActionList[key]" @change="(value:AnyObject) => actionCheckChange(value, key)">
             <el-checkbox :key="action_id" :label="action_id" v-for="(action_name, action_id) in item">{{ action_name }}</el-checkbox>
           </el-checkbox-group>
         </div>
@@ -131,13 +131,13 @@
         <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
         <template #formatRow="{ row, field }">
           <span v-if=" field === 'status' ">
-            <el-switch v-model="row[field]" :disabled="dlg_first.statusDisabled(row)" @change="(value) => firstDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+            <el-switch v-model="row[field]" :disabled="dlg_first.statusDisabled(row)" @change="(value:string|number) => firstDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
           </span>
         </template>
 
         <!-- 列表每行 自定义按钮操作 -->
         <template #rowAction="{ row, service }">
-          <template v-if=" typeof dialog_table_event.row_event != 'undefined' ">
+          <template v-if=" typeof dialog_table_event != 'undefined' && typeof dialog_table_event.row_event != 'undefined' ">
             <template :key="idx" v-for="(item, idx) in dialog_table_event.row_event">
               <template v-if="dlg_expand_action">
                 <el-button :type="item.type" @click.prevent="item.event(row, service)" v-if="item.visible && (typeof item.showCallback == 'undefined' || item.showCallback(row))">
@@ -184,7 +184,7 @@
         <!-- 每行中的每个字段内容 自定义格式化内容显示： 可获取参数有 { row, field } -->
         <template #formatRow="{ row, field }">
           <span v-if=" field === 'status' ">
-            <el-switch v-model="row[field]" :disabled="dlg_second.statusDisabled(row)" @change="(value) => secondDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
+            <el-switch v-model="row[field]" :disabled="dlg_second.statusDisabled(row)" @change="(value:string|number) => secondDlgChangeStatus(value, row)" inline-prompt :active-value="10" active-text="开" :inactive-value="20" inactive-text="关"></el-switch>
           </span>
         </template>
 
@@ -197,6 +197,7 @@
 
 <script lang="ts" setup>
 import ContentService from "@/service/ContentService";
+import type {AnyObject} from "@/typings/vuecmf";
 
 const service = new ContentService()
 const {
