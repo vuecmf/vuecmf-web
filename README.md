@@ -1,13 +1,9 @@
 # vuecmf
 VueCMF内容管理快速开发框架v3(前端)
 
-v3版本开始使用vite方式打包，原v2版本使用的是webpack方式打包
-
 前端：
 
-v2.0.x  https://gitee.com/emei/vuecmf
-
-v2.1+  https://gitee.com/emei/vuecmf-web
+https://gitee.com/emei/vuecmf-web
 
 后端：
 
@@ -15,10 +11,9 @@ PHP版  https://gitee.com/emei/vuecmf-php
 
 Go版   https://gitee.com/emei/vuecmf-go
 
-注意：前端v2.0.x与后端v2.0.x匹配, 前端v2.1.x与后端v2.1.x匹配
 
 # 项目介绍
-VueCMF是一款完全开源免费的内容管理快速开发框架。采用前后端分离模式搭建，2.1+版本前端使用vue3、Element Plus和TypeScript构建，后端API的PHP版基于ThinkPHP8开发，Go版基于Gin开发。可用于快速开发CMS、CRM、WMS、OMS、ERP等管理系统，开发简单、高效易用，极大减少系统的开发周期和研发成本！甚至不用写一行代码就能设计出功能强大的管理系统。
+VueCMF是一款完全开源免费的内容管理快速开发框架。采用前后端分离模式搭建，v3版本前端使用vue3、Element Plus和TypeScript构建，后端API的PHP版基于ThinkPHP8开发，Go版基于Gin开发。可用于快速开发CMS、CRM、WMS、OMS、ERP等管理系统，开发简单、高效易用，极大减少系统的开发周期和研发成本！甚至不用写一行代码就能设计出功能强大的管理系统。
 
 # 示例演示
 - [vuecmf示例演示](http://www.vuecmf.com/)
@@ -58,6 +53,12 @@ yarn dev
 yarn build:test
 
 # 如果是发布生产环境运行，则在命令行输入下面回车
-yarn build
+yarn build-only
 
 ```
+## Docker部署
+若没有安装docker，则必须先安装docker，然后在项目根目录下执行如下命令即可快速部署项目
+```
+docker compose up -d
+```
+
